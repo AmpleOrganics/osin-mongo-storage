@@ -3,6 +3,7 @@ package mgostore
 import (
     "github.com/RangelReale/osin"
 
+	"encoding/json"
     "labix.org/v2/mgo"
     "labix.org/v2/mgo/bson"
 )
@@ -75,9 +76,22 @@ func (store *MongoStorage) LoadAuthorize(code string) (*osin.AuthorizeData, erro
     session := store.session.Copy()
     defer session.Close()
     authorizations := session.DB(store.dbName).C(AUTHORIZE_COL)
-    authData := new(osin.AuthorizeData)
-    err := authorizations.FindId(code).One(authData)
-    return authData, err
+	authData := osin.AuthorizeData{
+		Client: new(osin.DefaultClient),
+	}
+	generic := make(bson.M)
+	if err := authorizations.FindId(code).One(&generic); err != nil {
+		return &authData, err
+	}
+
+	j1, err := json.Marshal(generic)
+	if err != nil {
+		return &authData, err
+	}
+
+	err = json.Unmarshal(j1, &authData)
+
+    return &authData, err
 }
 
 func (store *MongoStorage) RemoveAuthorize(code string) error {
