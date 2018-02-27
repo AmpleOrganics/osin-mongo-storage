@@ -4,8 +4,8 @@ import (
     "fmt"
     "net/http"
 
-    "labix.org/v2/mgo"
-    "labix.org/v2/mgo/bson"
+    "gopkg.in/mgo.v2"
+    "gopkg.in/mgo.v2/bson"
 
     "github.com/RangelReale/osin"
     "github.com/RangelReale/osin/example"
