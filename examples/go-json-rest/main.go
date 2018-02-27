@@ -11,7 +11,7 @@ import (
     "github.com/ant0ine/go-json-rest/rest"
     "github.com/gorilla/context"
     "github.com/gorilla/mux"
-    "labix.org/v2/mgo"
+    "gopkg.in/mgo.v2"
 )
 
 func main() {
